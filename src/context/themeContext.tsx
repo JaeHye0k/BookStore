@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { getTheme, ThemeName } from "../style/theme";
 import { GlobalStyle } from "../style/global";
-import ThemeSwitcher from "../components/header/ThemeSwitcher";
 import { ThemeProvider } from "styled-components";
 
 const DEFALT_THEME_NAME = "light";
@@ -34,6 +33,7 @@ export const BookStoreThemeProvider = ({ children }: { children: ReactNode }) =>
 
     return (
         <ThemeContext.Provider value={{ themeName, toggleTheme }}>
+            {/*ThemeProvider 는 Context API 를 이용해서 Props를 자식 컴포넌트에게 전달한다.*/}
             <ThemeProvider theme={getTheme(themeName)}>
                 <GlobalStyle themeName={themeName} />
                 {children}

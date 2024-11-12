@@ -12,8 +12,8 @@ function App() {
     // const [themeName, setThemeName] = useState<ThemeName>("light");
     return (
         <BookStoreThemeProvider>
-            <ThemeSwitcher />
             <Layout>
+                {/* <ThemeSwitcher /> */}
                 <Home />
             </Layout>
         </BookStoreThemeProvider>
