@@ -1,4 +1,4 @@
-export interface Pagenation {
+export interface Pagination {
     totalBooks: number;
     currentPage: number;
 }

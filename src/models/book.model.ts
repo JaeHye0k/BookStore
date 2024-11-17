@@ -17,5 +17,5 @@ export interface Book {
 
 export interface BookDetail extends Book {
     categoryName: string;
-    liked: 0 | 1;
+    liked: boolean;
 }

@@ -7,8 +7,12 @@ interface Props {
     color?: ColorKey;
 }
 
-const Title: React.FC<Props> = ({ children, size }) => {
-    return <TitleStyle size={size}>{children}</TitleStyle>;
+const Title: React.FC<Props> = ({ children, size, color }) => {
+    return (
+        <TitleStyle size={size} color={color}>
+            {children}
+        </TitleStyle>
+    );
 };
 
 // ThemeProvider 에서 theme 를 가져오고,

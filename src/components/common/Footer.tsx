@@ -25,12 +25,8 @@ const FooterStyle = styled.footer`
     align-items: center;
 
     .logo {
-        height: 100px;
-        overflow-y: hidden;
         img {
             width: 200px;
-            position: relative;
-            top: -50px;
         }
     }
 
