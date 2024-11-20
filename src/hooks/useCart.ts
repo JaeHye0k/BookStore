@@ -1,23 +1,28 @@
-import { useEffect, useState } from "react";
 import { Cart } from "../models/cart.model";
 import { deleteCart, fetchCart } from "../api/carts.api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useCart = () => {
-    const [carts, setCarts] = useState<Cart[]>([]);
-    const [isEmpty, setIsEmpty] = useState(true);
+    const queryClient = useQueryClient();
+
+    const { data: carts = [], isLoading } = useQuery({
+        queryKey: ["carts"],
+        queryFn: () => fetchCart(),
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id: number) => deleteCart(id),
+        onSuccess: (carts, id) => {
+            queryClient.setQueryData(
+                ["carts"],
+                carts.filter((cart: Cart) => cart.id !== id),
+            );
+        },
+    });
 
     const deleteCartItem = (id: number) => {
-        deleteCart(id).then(() => {
-            setCarts(carts.filter((cart) => cart.id !== id));
-        });
+        deleteMutation.mutate(id);
     };
 
-    useEffect(() => {
-        fetchCart().then((carts) => {
-            setCarts(carts);
-            setIsEmpty(carts.length === 0);
-        });
-    }, []);
-
-    return { carts, isEmpty, deleteCartItem };
+    return { carts, deleteCartItem, isEmpty: carts.length === 0, isLoading };
 };

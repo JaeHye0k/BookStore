@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import BookItem from "./BookItem";
-import { BookStoreThemeProvider } from "../../context/themeContext";
-import { Book } from "../../models/book.model";
-import { formatNumber } from "../../utils/format";
+import BookItem from "@components/books/BookItem";
+import { BookStoreThemeProvider } from "@src/context/themeContext";
+import { Book } from "@models/book.model";
+import { formatNumber } from "@src/utils/format";
 
 // BookItem 에서 export 해오지 않는 이유는 BookItem 은 추후에 fetch 를 통해 데이터를 넘겨받을 것이므로 지울 예정이라서.
 const dummyBook: Book = {

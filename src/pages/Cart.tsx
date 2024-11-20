@@ -10,11 +10,12 @@ import Button from "../components/common/Button";
 import { useAlert } from "../hooks/useAlert";
 import { OrderSheet } from "../models/order.model";
 import { useNavigate } from "react-router-dom";
+import Loading from "@src/components/common/Loading";
 
 const Cart = () => {
     const navigate = useNavigate();
     const { showAlert, showConfirm } = useAlert();
-    const { carts, deleteCartItem, isEmpty } = useCart();
+    const { carts, deleteCartItem, isEmpty, isLoading } = useCart();
     const [checkedItems, setCheckedItems] = useState<number[]>([]); // id만 담은 배열
     const handelCheckItem = (id: number) => {
         if (checkedItems.includes(id)) {
@@ -65,38 +66,41 @@ const Cart = () => {
         });
     };
 
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    if (isEmpty) {
+        return (
+            <Empty
+                title="장바구니가 비었습니다."
+                icon={<FaShoppingCart />}
+                description={<>장바구니를 채워보세요.</>}
+            />
+        );
+    }
+
     return (
         <>
             <Title size="large">장바구니</Title>
             <CartStyle $isEmpty={isEmpty}>
-                {!isEmpty && (
-                    <>
-                        <div className="content">
-                            {carts.map((cart) => (
-                                <CartItem
-                                    key={cart.id}
-                                    cart={cart}
-                                    checkedItems={checkedItems}
-                                    onCheck={handelCheckItem}
-                                    onDelete={handleDeleteItem}
-                                />
-                            ))}
-                        </div>
-                        <div className="summary">
-                            <CartSummary totalQuantity={totalQuantity} totalPrice={totalPrice} />
-                            <Button size="large" scheme="primary" onClick={handleOrder}>
-                                주문하기
-                            </Button>
-                        </div>
-                    </>
-                )}
-                {isEmpty && (
-                    <Empty
-                        title="장바구니가 비었습니다."
-                        icon={<FaShoppingCart />}
-                        description={<>장바구니를 채워보세요.</>}
-                    />
-                )}
+                <div className="content">
+                    {carts.map((cart) => (
+                        <CartItem
+                            key={cart.id}
+                            cart={cart}
+                            checkedItems={checkedItems}
+                            onCheck={handelCheckItem}
+                            onDelete={handleDeleteItem}
+                        />
+                    ))}
+                </div>
+                <div className="summary">
+                    <CartSummary totalQuantity={totalQuantity} totalPrice={totalPrice} />
+                    <Button size="large" scheme="primary" onClick={handleOrder}>
+                        주문하기
+                    </Button>
+                </div>
             </CartStyle>
         </>
     );
