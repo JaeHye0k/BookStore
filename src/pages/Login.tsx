@@ -15,13 +15,14 @@ const Login = () => {
         formState: { errors },
     } = useForm<SignupProps>();
     const navigate = useNavigate();
-    const showAlert = useAlert();
-    const storeLogin = useAuthStore((state) => state.storeLogin);
+    const { showAlert } = useAlert();
+    const { storeLogin } = useAuthStore();
     const onSubmit: SubmitHandler<SignupProps> = (data) => {
         login(data)
             .then((res) => {
                 showAlert("로그인이 완료되었습니다");
                 storeLogin(res.token);
+                // window.location.href = "/";
                 navigate("/");
             })
             .catch((err) => {

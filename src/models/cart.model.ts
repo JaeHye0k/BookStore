@@ -5,4 +5,5 @@ export interface Cart {
     title: string;
     price: number;
     bookId: number;
+    summary: string;
 }

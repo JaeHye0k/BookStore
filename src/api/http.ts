@@ -1,4 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
+// http.ts
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { getToken, removeToken } from "../store/authStore";
 
 const BASE_URL = "http://localhost:9999";
@@ -12,19 +13,14 @@ export const createClient = (config?: AxiosRequestConfig) => {
             "Content-Type": "application/json",
             Authorization: getToken() || "",
         },
-        // `withCredentials`은 자격 증명을 사용하여 사이트 간 액세스 제어 요청을 해야 하는지 여부를 나타냅니다.
         withCredentials: true,
         ...config,
     });
     axiosInstance.interceptors.response.use(
         (response) => {
-            // 2xx 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
-            // 응답 데이터가 있는 작업 수행
             return response;
         },
         (error) => {
-            // 2xx 외의 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
-            // 응답 오류가 있는 작업 수행
             // 토큰 만료
             if (error.response.status === 401) {
                 removeToken();
@@ -34,7 +30,44 @@ export const createClient = (config?: AxiosRequestConfig) => {
             return Promise.reject(error);
         },
     );
+    axiosInstance.interceptors.request.use(
+        (config) => {
+            config.headers.Authorization = getToken() || "";
+            return config;
+        },
+        (error) => {
+            console.log(error);
+            Promise.reject(error);
+        },
+    );
     return axiosInstance;
 };
 
 export const httpClient = createClient();
+
+type RequestMethod = "get" | "post" | "put" | "delete";
+
+export const requestHandler = async <T = any, R = AxiosResponse<T>, D = any>(
+    method: RequestMethod,
+    url: string,
+    payload?: D,
+) => {
+    let response;
+
+    switch (method) {
+        case "get":
+            response = await httpClient.get<R>(url);
+            break;
+        case "post":
+            response = await httpClient.post(url, payload);
+            break;
+        case "put":
+            response = await httpClient.put(url, payload);
+            break;
+        case "delete":
+            response = await httpClient.delete(url);
+            break;
+    }
+
+    return response.data;
+};

@@ -9,7 +9,6 @@ interface StoreState {
 
 export const getToken = () => {
     const token = localStorage.getItem("token");
-    console.log(token);
     return token;
 };
 
@@ -23,7 +22,7 @@ export const removeToken = () => {
 
 export const useAuthStore = create<StoreState>()(
     immer((set) => ({
-        isLoggedIn: !!getToken(),
+        isLoggedIn: getToken() ? true : false,
         storeLogin: (token) =>
             set((state) => {
                 setToken(token);

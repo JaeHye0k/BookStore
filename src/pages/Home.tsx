@@ -1,9 +1,15 @@
+import { styled } from "styled-components";
+
 const Home = () => {
     return (
-        <>
-            <div>home body</div>
-        </>
+        <HomeStyle>
+            <h1>Home</h1>
+        </HomeStyle>
     );
 };
+
+const HomeStyle = styled.div`
+    color: ${({ theme }) => theme.color.primary};
+`;
 
 export default Home;

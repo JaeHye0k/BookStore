@@ -1,10 +1,10 @@
 import { styled } from "styled-components";
-import { Book } from "../../models/book.model";
+import { Book } from "@src/models/book.model";
 import { FC } from "react";
-import { getImgSrc } from "../../utils/image";
-import { formatNumber } from "../../utils/format";
+import { getImgSrc } from "@src/utils/image";
+import { formatNumber } from "@src/utils/format";
 import { FaHeart } from "react-icons/fa";
-import { ViewMode } from "./BookViewSwitcher";
+import { ViewMode } from "@src/components/books/BookViewSwitcher";
 import { Link } from "react-router-dom";
 
 interface Props {

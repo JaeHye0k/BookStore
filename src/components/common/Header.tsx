@@ -30,6 +30,7 @@ const Header = () => {
 
     const handleLogout = () => {
         storeLogout();
+        // window.location.reload();
     };
     return (
         <HeaderStyle>
