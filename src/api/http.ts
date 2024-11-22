@@ -1,5 +1,5 @@
 // http.ts
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { getToken, removeToken } from "../store/authStore";
 
 const BASE_URL = "http://localhost:9999";
@@ -47,16 +47,13 @@ export const httpClient = createClient();
 
 type RequestMethod = "get" | "post" | "put" | "delete";
 
-export const requestHandler = async <T = any, R = AxiosResponse<T>, D = any>(
-    method: RequestMethod,
-    url: string,
-    payload?: D,
-) => {
+export const requestHandler = async <T>(method: RequestMethod, url: string, payload?: T) => {
     let response;
 
     switch (method) {
         case "get":
-            response = await httpClient.get<R>(url);
+            if (payload) response = await httpClient.get(url, payload);
+            else response = await httpClient.get(url);
             break;
         case "post":
             response = await httpClient.post(url, payload);

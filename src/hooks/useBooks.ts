@@ -22,7 +22,6 @@ export const useBooks = () => {
                 limit: LIMIT,
             }),
     });
-
     return {
         books: booksData?.books,
         pagination: booksData?.pagination,
@@ -30,3 +29,10 @@ export const useBooks = () => {
         isBooksLoading,
     };
 };
+
+/*
+data = {
+    books,
+    pagination
+}
+*/

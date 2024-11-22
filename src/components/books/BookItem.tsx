@@ -34,7 +34,7 @@ const BookItem: FC<Props> = ({ book, view }) => {
     );
 };
 
-const BookItemStyle = styled.div<Pick<Props, "view">>`
+export const BookItemStyle = styled.div<Pick<Props, "view">>`
     a {
         display: flex;
         flex-direction: ${({ view }) => (view === "grid" ? "column" : "low")};

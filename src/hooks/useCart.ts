@@ -1,21 +1,21 @@
 import { Cart } from "../models/cart.model";
 import { deleteCart, fetchCart } from "../api/carts.api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { DefaultError, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useCart = () => {
     const queryClient = useQueryClient();
 
-    const { data: carts = [], isLoading } = useQuery({
+    // data 타입을 명시해주기 위해 useQuery에 제네릭 타입을 전달함
+    const { data: carts = [], isLoading } = useQuery<unknown, DefaultError, Cart[]>({
         queryKey: ["carts"],
         queryFn: () => fetchCart(),
     });
 
     const deleteMutation = useMutation({
         mutationFn: (id: number) => deleteCart(id),
-        onSuccess: (carts, id) => {
-            queryClient.setQueryData(
-                ["carts"],
-                carts.filter((cart: Cart) => cart.id !== id),
+        onSuccess: (data, id) => {
+            queryClient.setQueryData(["carts"], (oldCarts: Cart[]) =>
+                oldCarts.filter((cart: Cart) => cart.id !== id),
             );
         },
     });
